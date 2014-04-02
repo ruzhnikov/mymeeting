@@ -1,0 +1,8 @@
+[general]
+
+[pbx]
+backend = asterisk
+user = test
+secret = test
+addr = 127.0.0.1
+port = 5038
