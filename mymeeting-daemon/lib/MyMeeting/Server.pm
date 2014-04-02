@@ -1,5 +1,6 @@
 package MyMeeting::Server;
 
-use Modern::Perl;
+use strict;
+use warnings;
 
 1;
