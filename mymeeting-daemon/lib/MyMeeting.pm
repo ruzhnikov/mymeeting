@@ -1,13 +1,14 @@
 package MyMeeting;
 
-use Modern::Perl;
+use strict;
+use warnings;
 use Carp;
 use Config::Tiny;
 
-use MyMeeting::JSON;
 use MyMeeting::Server;
 use MyMeeting::PBX;
 use MyMeeting::Cache;
+use MyMeeting::JSON;
 
 use constant {
     DEFAULT_CONFIG_PATH => '/etc/mymeeting',
@@ -26,7 +27,21 @@ sub new {
 sub _init {
     my ( $self ) = @_;
 
+    $self->_init_pbx;
     # ...
+}
+
+sub _init_pbx {
+    my ( $self ) = @_;
+
+    my %config = get_config()->{pbx};
+    my $backend = delete $config{backend};
+    $backend = lc $backend;
+    $backend = ucfirst $backend;
+    $MyMeeting::PBX::BACKEND = $backend;
+    $self->{pbx} = MyMeeting::PBX->new( %config );
+
+    return 1;
 }
 
 sub get_config {
@@ -37,6 +52,16 @@ sub get_config {
     confess $Config::Tiny::errstr if ( Config::Tiny->errstr );
 
     return $data;
+}
+
+sub pbx {
+    my ( $self ) = @_;
+
+    unless ( $self->{pbx} ) {
+        $self->_init_pbx;
+    }
+
+    return $self->{pbx};
 }
 
 1;
