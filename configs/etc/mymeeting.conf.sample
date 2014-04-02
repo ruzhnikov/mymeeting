@@ -1,4 +1,6 @@
 [general]
+server_address = 127.0.0.1
+server_port = 60020
 
 [pbx]
 backend = asterisk
