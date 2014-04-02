@@ -17,12 +17,15 @@ our $BACKEND ||= DEFAULT_BACKEND;
 sub new {
     my ( $class, %params ) = @_;
 
+    my %srv_conf;
+
     for my $param ( NECESSARY_PARAMS ) {
         confess "param $param needed!" unless ( $params{ $param } );
+        $srv_conf{ $param } = $params{ $param };
     }
 
     my $self = bless {}, $class;
-    $self->_init( %params );
+    $self->_init( %srv_conf );
 
     return $self->{backend};
 }

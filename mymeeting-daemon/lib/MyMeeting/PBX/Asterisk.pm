@@ -29,14 +29,14 @@ sub connect {
 
     $self->{pbx} = $pbx;
 
-    return 1; 
+    return 1;
 }
 
 sub pbx {
     my ( $self ) = @_;
 
     unless ( $self->{pbx} ) {
-    	$self->connect;
+        $self->connect;
     }
 
     return $self->{pbx};
