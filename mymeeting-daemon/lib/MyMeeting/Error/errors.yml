@@ -1,7 +1,0 @@
-UNKNOWN_ERROR:
-    code: 999
-    text: "Unknown Error"
-
-WRONG_JSON:
-    code: 101
-    text: "Error parse json"
