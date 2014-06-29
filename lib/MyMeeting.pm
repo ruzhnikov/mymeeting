@@ -7,7 +7,7 @@ use MyMeeting::Config;
 use MyMeeting::Log;
 use MyMeeting::Error;
 use MyMeeting::JSON;
-use MyMeeting::XML;
+use MyMeeting::Sessions;
 
 sub new {
     my $class = shift;
@@ -24,6 +24,7 @@ sub _init {
     $self->_init_config;
     $self->_init_log;
     $self->_init_errors;
+    $self->_init_sessions;
 }
 
 sub _init_config {
@@ -44,6 +45,12 @@ sub _init_errors {
     # ...
 }
 
+sub _init_sessions {
+    my $self = shift;
+
+    $self->{_sessions} = MyMeeting::Sessions->new;
+}
+
 sub config {
     my $self = shift;
 
@@ -58,6 +65,14 @@ sub log {
     $self->{_logger} ||= MyMeeting::Log::init;
 
     return $self->{_logger};
+}
+
+sub sessions {
+    my $self = shift;
+
+    $self->{_sessions} ||= MyMeeting::Sessions->new;
+    
+    return $self->{_sessions}
 }
 
 1;

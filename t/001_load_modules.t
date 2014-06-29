@@ -2,14 +2,13 @@
 
 use strict;
 use warnings;
-use Test::More tests => 7;
+use Test::More tests => 6;
 
 use FindBin qw/ $Bin /;
 use lib "$Bin/../lib";
 
-my @modules = qw/ MyMeeting MyMeeting::Server MyMeeting::PBX
-            MyMeeting::Cache MyMeeting::JSON MyMeeting::Error
-            MyMeeting::Log /;
+my @modules = qw/ MyMeeting::Sessions MyMeeting::JSON MyMeeting::Error
+            MyMeeting::Log MyMeeting::Config MyMeeting /;
 
 for my $module ( @modules ) {
     require_ok( $module );
