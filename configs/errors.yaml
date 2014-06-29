@@ -1,0 +1,3 @@
+WRONG_JSON:
+    code: 101
+    text: "Error parse json"
