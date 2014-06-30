@@ -2,6 +2,7 @@ package MyMeeting::Sessions;
 
 use strict;
 use warnings;
+use vars qw/ $AUTOLOAD /;
 
 use constant DEFAULT_SESSION_TIMEOUT => 180;
 
@@ -11,6 +12,21 @@ sub new {
     my $self = bless { _sessions => {} }, $class;
 
     return $self;
+}
+
+# for the methods 'add' and 'update'
+sub AUTOLOAD {
+    my $method = $AUTOLOAD;
+
+    $method =~ s/.*:://;
+    if ( $method eq 'add' || $method eq 'update' ) {
+        my ( $self, $session ) = @_;
+
+        return unless $session;
+
+        $self->sessions->{ $session } = time();
+        return 1;
+    }
 }
 
 sub sessions {
@@ -24,28 +40,7 @@ sub sessions {
 sub get {
     my ( $self, $session ) = @_;
 
-    return unless $session;
-    return unless $self->sessions->{$session};
-
-    return $self->sessions->{$session};
-}
-
-sub add {
-    my ( $self, $session ) = @_;
-
-    return unless $session;
-
-    $self->sessions->{ $session } = time();
-    return 1;
-}
-
-sub update {
-    my ( $self, $session ) = @_;
-
-    return unless $session;
-    $self->sessions->{ $session } = time();
-
-    return 1;
+    return $self->sessions->{ $session };
 }
 
 sub delete {
@@ -65,7 +60,7 @@ sub check_expr {
     my $session_time = $self->sessions->{ $session };
     my $cur_time = time();
 
-    return $cur_time - $session_time <= $timeout ? 1 : '';
+    return ( $cur_time - $session_time <= $timeout ) ? 1 : '';
 }
 
 1;

@@ -17,12 +17,12 @@ sub init {
     my $loglevel = $params{level} || DEFAULT_LEVEL;
     open( my $fh, '>>', $logfile ) or warn "cannot open log file: $!";
 
-    my $logger = Log::Fast->new(
+    my $logger = Log::Fast->new({
         level   => $loglevel,
         prefix  => '%D %T [%L] ',
         type    => 'fh',
         fh      => $fh ? $fh : \*STDERR,
-    );
+    });
 
     return $logger;
 }

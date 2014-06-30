@@ -50,6 +50,9 @@ sub _get_config {
     if ( -e $confg_file ) {
         $data = YAML::Syck::LoadFile( $confg_file );
     }
+    else {
+        $data = get( CONF_FILE );
+    }
 
     $self->{_data} = $data;
 }
@@ -102,10 +105,10 @@ sub get {
 
     return {} unless $filename;
 
-    $filename =~ s/(\.yaml|\.yml)//;
-    my $ext = $1 || '.yaml';
+    $filename .= '.yaml' unless $filename =~ m/(\.yaml|\.yml)$/;
+
     my $conf_dir = _get_conf_dir();
-    my $abs_path = $conf_dir . $filename . $ext;
+    my $abs_path = $conf_dir . $filename;
 
     return {} unless -e $abs_path;
 
