@@ -14,7 +14,7 @@ sub init {
     my %params = @_;
 
     my $logfile  = $params{logfile} || DEFAULT_LOGFILE;
-    my $loglevel = $params{level} || DEFAULT_LEVEL;
+    my $loglevel = uc $params{level} || DEFAULT_LEVEL;
     open( my $fh, '>>', $logfile ) or warn "cannot open log file: $!";
 
     my $logger = Log::Fast->new({
