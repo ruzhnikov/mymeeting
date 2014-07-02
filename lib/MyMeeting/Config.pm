@@ -16,6 +16,7 @@ use strict;
 use warnings;
 use YAML::Syck ();
 use File::Spec;
+use Attribute::Protected;
 
 use constant {
     CONF_DIR    => '/etc/mymeeting',
@@ -39,22 +40,6 @@ sub new {
     $self->_get_config;
 
     return $self;
-}
-
-sub _get_config {
-    my $self = shift;
-
-    my $data;
-    my $confg_file = CONF_DIR . '/' . CONF_FILE;
-
-    if ( -e $confg_file ) {
-        $data = YAML::Syck::LoadFile( $confg_file );
-    }
-    else {
-        $data = get( CONF_FILE );
-    }
-
-    $self->{_data} = $data;
 }
 
 =item B<general>
@@ -93,6 +78,12 @@ sub pbx {
     return {};
 }
 
+sub logger {
+    my $self = shift;
+
+    return $self->general->{logger} ? $self->general->{logger} : {};
+}
+
 =item B<get>
 
 Получить данные из указанного yaml-файла
@@ -115,7 +106,25 @@ sub get {
     return YAML::Syck::LoadFile( $abs_path );
 }
 
-sub _get_conf_dir {
+######## private methods #########
+
+sub _get_config : Private {
+    my $self = shift;
+
+    my $data;
+    my $confg_file = CONF_DIR . '/' . CONF_FILE;
+
+    if ( -e $confg_file ) {
+        $data = YAML::Syck::LoadFile( $confg_file );
+    }
+    else {
+        $data = get( CONF_FILE );
+    }
+
+    $self->{_data} = $data;
+}
+
+sub _get_conf_dir : Private {
     my $cur_dir = (File::Spec->splitpath( __FILE__ ))[1];
     return $cur_dir . '../../configs/';
 }
