@@ -3,6 +3,7 @@ package MyMeeting::Sessions;
 use strict;
 use warnings;
 use vars qw/ $AUTOLOAD /;
+use Attribute::Protected;
 
 use constant DEFAULT_SESSION_TIMEOUT => 180;
 
@@ -24,43 +25,43 @@ sub AUTOLOAD {
 
         return unless $session;
 
-        $self->sessions->{ $session } = time();
+        $self->_sessions->{ $session } = time();
         return 1;
     }
-}
-
-sub sessions {
-    my $self = shift;
-
-    $self->{_sessions} ||= {};
-
-    return $self->{_sessions};
 }
 
 sub get {
     my ( $self, $session ) = @_;
 
-    return $self->sessions->{ $session };
+    return $self->_sessions->{ $session };
 }
 
 sub delete {
-    my ( $self, $session );
+    my ( $self, $session ) = @_;
 
-    return delete $self->sessions->{ $session };
+    return delete $self->_sessions->{ $session };
 }
 
 sub check_expr {
     my ( $self, $session, $timeout ) = @_;
 
     return unless $session;
-    return unless $self->sessions->{ $session };
+    return unless $self->_sessions->{ $session };
 
     $timeout ||= DEFAULT_SESSION_TIMEOUT;
 
-    my $session_time = $self->sessions->{ $session };
+    my $session_time = $self->_sessions->{ $session };
     my $cur_time = time();
 
     return ( $cur_time - $session_time <= $timeout ) ? 1 : '';
+}
+
+sub _sessions : Private {
+    my $self = shift;
+
+    $self->{_sessions} ||= {};
+
+    return $self->{_sessions};
 }
 
 1;
