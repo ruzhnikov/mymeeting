@@ -5,7 +5,7 @@ use warnings;
 use utf8;
 use Data::Dumper;
 
-use Test::More;
+use Test::More tests => 9;
 
 use FindBin qw/ $Bin /;
 use lib "$Bin/../lib";
@@ -40,7 +40,7 @@ my $good_structure = {
 ok( MyMeeting::JSON::validate( $good_json ), 'validate correct json' );
 ok( !MyMeeting::JSON::validate( $bad_json ), 'validate incorrect json' );
 
-utf8::encode $_ for ( $good_json, $bad_json, $good_structure );
+utf8::encode $_ for ( $good_json, $bad_json );
 
 my $data = MyMeeting::JSON::from_json( $good_json );
 ok( $data, 'convert to data from json' );
