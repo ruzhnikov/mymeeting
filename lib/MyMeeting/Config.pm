@@ -78,10 +78,15 @@ sub pbx {
     return {};
 }
 
-sub logger {
+sub data {
     my $self = shift;
 
-    return $self->general->{logger} ? $self->general->{logger} : {};
+    return $self->_get_config ? $self->_get_config : {};
+}
+
+sub reread {
+    my $self = shift;
+    undef $self->{_data};
 }
 
 =item B<get>
@@ -114,14 +119,16 @@ sub _get_config : Private {
     my $data;
     my $confg_file = CONF_DIR . '/' . CONF_FILE;
 
-    if ( -e $confg_file ) {
-        $data = YAML::Syck::LoadFile( $confg_file );
-    }
-    else {
-        $data = get( CONF_FILE );
+    unless ( $self->{_data} ) {
+        if ( -e $confg_file ) {
+            $self->{_data} = YAML::Syck::LoadFile( $confg_file );
+        }
+        else {
+            $self->{_data} = get( CONF_FILE );
+        }
     }
 
-    $self->{_data} = $data;
+    return $self->{_data};
 }
 
 sub _get_conf_dir : Private {

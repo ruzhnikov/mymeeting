@@ -3,11 +3,13 @@ general:
     bind_port: 60022
     session_timeout: 180
     daemonize: true
-    logger:
-        type: fh    # fh or syslog
-        fh:
-            level: info  # info, debug, warn, error
-            file: /var/log/mymeeting/mymeeting.log
+    max_sessions_count: 200 # the maximum number of sessions 
+
+logger:
+    type: fh    # fh or syslog
+    fh:
+        level: info  # info, debug, warn, error
+        file: /var/log/mymeeting/mymeeting.log
 
 pbx:
     host: 127.0.0.1
