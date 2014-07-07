@@ -17,14 +17,14 @@ sub to_json {
     my $data = shift;
 
     return unless $data or ref $data;
-    return encode_json( $data );
+    return JSON::XS->new->utf8->encode( $data );
 }
 
 sub from_json {
     my $json = shift;
 
     return {} unless $json;
-    return decode_json( $json );
+    return JSON::XS->new->utf8->decode( $json );
 }
 
 1;
