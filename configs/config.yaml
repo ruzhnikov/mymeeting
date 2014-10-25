@@ -12,6 +12,17 @@ logger:
         file: /var/log/mymeeting/mymeeting.log
 
 pbx:
-    host: 127.0.0.1
-    port: 8021
-    pass: test
+    name: asterisk  # asterisk or freeswitch
+
+    asterisk_connect_params:
+        host: '127.0.0.1'
+        port:
+        auth_data:
+            user:
+            pass:
+
+    freeswitch_connect_params:
+        host: '127.0.0.1'
+        port: 8021
+        auth_data:
+            pass: test
