@@ -1,5 +1,5 @@
 ========================
-MyMeeting -- Yet another conference server based on FreeSWITCH
+MyMeeting -- Yet another conference server based on [Asterisk](http://asterisk.org)
 
 ## Copyright and license
 
